@@ -1,0 +1,10 @@
+/cache/
+node_modules
+/server.cfg
+/*.txt
+.yarnrc
+cfx
+artifacts
+start.bat
+\[build\]/
+.env

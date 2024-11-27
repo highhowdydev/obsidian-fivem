@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+    color-scheme: normal !important;
+    background: grey;
+}
+
+body {
+    background: none !important;
+    margin: 0;
+    --webkit-font-smoothing: antialiased;
+    --mox-osx-font-smoothing: grayscale;
+    height: 100vh;
+    user-select: none;
+    overflow: hidden !important;
+}
+
+p {
+    margin: 0;
+}
+
+#root {
+    height: 100%;
+}
+
+::-webkit-scrollbar {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    width: 0;
+    height: 0;
+}
+
+textarea {
+    resize: none;
+}

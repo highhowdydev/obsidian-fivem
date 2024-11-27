@@ -1,0 +1,11 @@
+build:
+- platform: browser
+  entry: "./client/index.ts"
+  outputName: client.js
+  minify: true
+- platform: node
+  build: "vite"
+  entry: "./ui/index.html"
+  outputName: server.js
+  tailwindcss: "./ui/tailwind.config.js"
+  publicDir: "./ui/public"

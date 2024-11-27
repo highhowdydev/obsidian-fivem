@@ -1,0 +1,51 @@
+resource_disablers:
+    - disabled
+    - disable
+    - exclude
+
+server:
+    name: Howdy FiveM Framework
+    project_name: howdy-framework
+    project_desc: Howdy FiveM Framework
+    locale: en
+    game_build: "3095"
+    artifact_build: latest
+    max_clients: 8
+    mode: development
+    banner_detail: ""
+    banner_connecting: ""
+
+server_tags:
+    - roleplay
+    - custom
+
+resources:
+    - test-resource
+
+groups:
+    - name: "admin"
+      users:
+          - "steam:11000010db8c83a" # Howdy
+      allow:
+          - "command"
+          - "adminmenu"
+          - "request.screenshot"
+          - "queueskip"
+          - "maintenence"
+      deny:
+          - "command.quit"
+
+extras:
+    - "set onesync true"
+    - "set onesync_population true"
+    - "set onesync_workaround763185 true"
+    - "set onesync_forceMigration true"
+    - "set onesync_distanceCullVehicles true"
+
+assets:
+    - directory: maps
+      targetDirectory: "[maps]"
+    - directory: vehicles
+      targetDirectory: "[vehicles]"
+    - directory: weapons
+      targetDirectory: "[weapons]"
