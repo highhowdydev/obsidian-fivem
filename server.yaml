@@ -20,7 +20,9 @@ server_tags:
     - custom
 
 resources:
-    - test-resource
+    # FiveM System Resources
+    - evh-base
+    - ui-resource
 
 groups:
     - name: "admin"

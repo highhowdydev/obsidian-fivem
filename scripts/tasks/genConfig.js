@@ -10,7 +10,7 @@ function generateConfig() {
 	const spinner = ora("Generating server config...").start();
 
 	try {
-		// ensureEnv();
+		ensureEnv();
 		if (fs.existsSync(cfgPath)) fs.rmSync(cfgPath, { force: true });
 		const { server, server_tags, resources, groups, extras } = getServerConfig();
 
@@ -49,7 +49,7 @@ function generateConfig() {
 
         cfg += `\n\n# Keys\n`
         cfg += `set steam_webApiKey "${process.env.STEAM_WEB_API_KEY}"\n`;
-        cfg += `set cfx_licenseKey "${process.env.CFX_LICENSE_KEY}"\n`;
+        cfg += `set sv_licenseKey "${process.env.CFX_LICENSE_KEY}"\n`;
 
 		writeFile(cfgPath, cfg);
 		spinner.succeed("Server config generated successfully.");
@@ -63,7 +63,6 @@ function generateConfig() {
 function generateGroupConfig(groups) {
     let cfg = ``
     groups.forEach(group => {
-		console.log(group);
 		for (const allow of group.allow) {
 			cfg += `add_ace group.${group.name} ${allow} allow\n`;
 		}

@@ -189,6 +189,7 @@ async function withEntryWithESBuild(item, source, output, relativePath, watch) {
 
 async function buildEntryWithVite(item, source, output, relativePath, watch) {
 	const config = {
+		base: "",
 		root: path.resolve(source, relativePath, "ui"),
 		build: {
 			outDir: item.outputDir

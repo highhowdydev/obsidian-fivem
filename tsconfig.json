@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@*": ["./src/*"]
     },
     "types": ["@citizenfx/client", "@citizenfx/server", "@types/node"],
     "removeComments": true,

@@ -1,0 +1,23 @@
+{
+    "extends": "../../../../tsconfig.json",
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "target": "ESNext",
+        "module": "ESNext",
+        "jsx": "react-jsx",
+        "esModuleInterop": true,
+        "lib": [
+            "ESNext",
+            "DOM",
+            "DOM.Iterable"
+        ],
+    },
+    "include": [
+        "src",
+        "node_modules",
+        ".prisma/client/default",
+        "../src/utils/**/*.ts",
+        "../src/types/**/*.d.ts",
+        "vite.config.ts"
+    ],
+}
