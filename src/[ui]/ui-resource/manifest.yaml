@@ -9,3 +9,8 @@ build:
   outputName: server.js
   tailwindcss: "./ui/tailwind.config.js"
   publicDir: "./ui/public"
+  alias:
+    "@components": "/src/components"
+    "@hooks": "/src/hooks"
+    "@types": "/src/types"
+    "@utils": "/src/utils"

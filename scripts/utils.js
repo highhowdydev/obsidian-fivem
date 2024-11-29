@@ -187,7 +187,7 @@ async function withEntryWithESBuild(item, source, output, relativePath, watch) {
 	await esbuild.build(esbuildOptions);
 }
 
-async function buildEntryWithVite(item, source, output, relativePath, watch) {
+export async function buildEntryWithVite(item, source, output, relativePath, watch) {
 	const config = {
 		base: "",
 		root: path.resolve(source, relativePath, "ui"),
@@ -212,6 +212,11 @@ async function buildEntryWithVite(item, source, output, relativePath, watch) {
 						autoprefixer(),
 					],
 				},
+			},
+		}),
+		...(item.alias && {
+			resolve: {
+				alias: item.alias,
 			},
 		}),
 		...(item.publicDir && {
