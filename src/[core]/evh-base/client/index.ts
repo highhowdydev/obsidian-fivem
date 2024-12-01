@@ -1,4 +1,4 @@
-import { Delay } from "@utils/shared";
+import { Delay } from "@/utils/shared";
 
 async function main() {
 	while (!NetworkIsSessionStarted()) await Delay(100);

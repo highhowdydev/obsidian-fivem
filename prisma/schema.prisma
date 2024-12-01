@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider   = "prisma-client-js"
   engineType = "binary"
 }
 
@@ -20,60 +20,59 @@ model User {
   license    String
   discord    String
   ip         String
-  name       String
-//   characters Character[]
+  characters Character[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-// model Character {
-//   id          String             @id @default(uuid())
-//   stateId     Int                @unique
-//   firstName   String
-//   lastName    String
-//   dob         String
-//   gender      String
-//   nationality String
-//   position    CharacterPosition?
-//   stats       CharacterStats?
+model Character {
+  id          String             @id @default(uuid())
+  stateId     Int                @unique @default(autoincrement())
+  firstName   String
+  lastName    String
+  dob         String
+  gender      String
+  nationality String
+  position    CharacterPosition?
+  stats       CharacterStats?
 
-//   user   User? @relation(fields: [userId], references: [id])
-//   userId Int?
+  user   User? @relation(fields: [userId], references: [id])
+  userId Int?
 
-//   createdAt        DateTime @default(now())
-//   updatedAt        DateTime @updatedAt
-//   characterStatsId String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  characterStatsId String?
 
-//   @@index([stateId, userId])
-// }
+  @@index([stateId, userId])
+}
 
-// model CharacterStats {
-//   id          String    @id @default(uuid())
-//   dead        Boolean   @default(false)
-//   job         String
-//   health      Int       @default(200)
-//   armor       Int       @default(0)
-//   thirst      Float     @default(0.0)
-//   hunger      Float     @default(0.0)
-//   character   Character @relation(fields: [characterId], references: [id])
-//   characterId String    @unique
+model CharacterStats {
+  id          String    @id @default(uuid())
+  dead        Boolean   @default(false)
+  job         String
+  health      Int       @default(200)
+  armor       Int       @default(0)
+  thirst      Float     @default(0.0)
+  hunger      Float     @default(0.0)
+  character   Character @relation(fields: [characterId], references: [id])
+  characterId String    @unique
 
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-// }
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
 
-// model CharacterPosition {
-//   id          String    @id @default(uuid())
-//   x           Int
-//   y           Int
-//   z           Int
-//   heading     Int
-//   character   Character @relation(fields: [characterId], references: [id])
-//   characterId String    @unique
+model CharacterPosition {
+  id          String    @id @default(uuid())
+  x           Float
+  y           Float
+  z           Float
+  heading     Float
+  character   Character @relation(fields: [characterId], references: [id])
+  characterId String    @unique
 
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-//   @@index([characterId])
-// }
+  @@index([characterId])
+}

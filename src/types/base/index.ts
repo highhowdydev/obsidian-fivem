@@ -1,25 +1,23 @@
-export type Character = {
-    id: number;
-    cid: number;
-    steam: string;
-    license: string;
-    discord: string;
-    ip: string;
-    name: string;
-    firstName: string;
-    lastName: string;
-    dob: string;
-    gender: string;
-    nationality: string;
-}
+import { Prisma } from "@prisma/client";
 
-export type CharacterPosition = {
-    id: string;
-    x: number;
-    y: number;
-    z: number;
-    heading: number;
-    characterCid: string;
-    createdAt: Date;
-    updatedAt: Date;
+const userWithCharacters = Prisma.validator<Prisma.UserArgs>()({
+	include: {
+		characters: true,
+	},
+});
+
+export type UserWithCharacters = Prisma.UserGetPayload<typeof userWithCharacters>;
+
+const characterWithData = Prisma.validator<Prisma.CharacterArgs>()({
+	include: {
+		position: true,
+		stats: true,
+	},
+});
+
+export type CharacterWithData = Prisma.CharacterGetPayload<typeof characterWithData>;
+
+export type Player = {
+    source: string;
+    character: CharacterWithData;
 }
