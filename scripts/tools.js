@@ -20,6 +20,8 @@ async function main() {
 					{ name: "Download CFX Artifacts", value: "artifacts" },
 					{ name: "Generate server config", value: "config" },
 					{ name: "Generated start.bat file", value: "start" },
+					{ name: "Configure asset links", value: "assets" },
+					{ name: "Exit", value: "exit" },
 				],
 			},
 		])
@@ -40,6 +42,12 @@ async function main() {
 					break;
 				case "start":
 					await import("./tasks/start.js");
+					break;
+				case "assets":
+					await import("./tasks/assetLink.js");
+					break;
+				case "exit":
+					process.exit(0);
 					break;
 			}
 		});

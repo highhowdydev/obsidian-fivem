@@ -8,8 +8,11 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "tailwindcss";
 import autoprefixer from "autoprefixer";
 
-const rootOutputPath = path.resolve(process.cwd(), "resources/[build]");
-const rootSourcePath = path.resolve(process.cwd(), "src");
+const rootOutputPath = sanitizePath(path.resolve(process.cwd(), "resources/[build]"));
+const rootSourcePath = sanitizePath(path.resolve(process.cwd(), "src"));
+export const assetsPath = sanitizePath(path.resolve(process.cwd(), "assets"));
+export const resourcePath = sanitizePath(path.resolve(process.cwd(), "resources"));
+
 const categoryExp = /^\[[\s\S]+\]$/;
 
 const initialResourceMap = {

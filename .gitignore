@@ -8,3 +8,5 @@ artifacts
 start.bat
 \[build\]/
 .env
+\[assets\]/
+/assets
