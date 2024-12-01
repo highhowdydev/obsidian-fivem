@@ -5,9 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "cross-env dev=0 node ./scripts/build.js",
-    "web": "node ./scripts/web.js",
-    "gen:config": "node ./scripts/tasks/genConfig.js",
-    "artifacts": "node ./scripts/tasks/artifacts.js"
+    "tools": "node ./scripts/tools.js"
   },
   "devDependencies": {
     "@citizenfx/client": "^2.0.11535-1",
@@ -39,6 +37,7 @@
     "@reduxjs/toolkit": "^2.3.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "colors": "^1.4.0",
     "motion": "^11.11.17",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

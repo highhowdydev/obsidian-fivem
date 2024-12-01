@@ -37,6 +37,10 @@ export function sanitizePath(path) {
 	return path.replace(/\\/g, "/");
 }
 
+export function emptyBuildDir() {
+	fs.rmSync(rootOutputPath, { recursive: true, force: true });
+}
+
 /**
  * Recursively walks through the given directory, looking for directories containing
  * a fxmanifest.lua or manifest.yaml file. If found, the resource is added to the

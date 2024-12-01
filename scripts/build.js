@@ -1,6 +1,6 @@
 import minimist from "minimist";
 import ora from "ora";
-import { buildResource, findResourcesToBuild } from "./utils.js";
+import { buildResource, emptyBuildDir, findResourcesToBuild } from "./utils.js";
 
 const spinner = ora();
 
@@ -11,6 +11,8 @@ async function main() {
     const jobs = [];
     const { target, w, watch } = minimist(process.argv.slice(2));
     const watching = watch || w;
+
+    if (!target) emptyBuildDir();
 
     const resources = findResourcesToBuild();
 
