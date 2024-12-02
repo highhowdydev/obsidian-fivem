@@ -15,7 +15,8 @@
 			"@components/*": ["components/*"],
 			"@utils/*": ["utils/*"],
 			"@hooks/*": ["hooks/*"],
-			"@stores/*": ["stores/*"],
+			"@store/*": ["store/*"],
+			"@styles/*": ["styles/*"]
 		}
 	},
 	"include": ["./**/*"]

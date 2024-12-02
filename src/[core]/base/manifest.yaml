@@ -1,8 +1,8 @@
 build:
-- platform: browser
-  entry: "./client/index.ts"
-  outputName: client.js
-  minify: true
-- platform: node
-  entry: "./server/index.ts"
-  outputName: server.js
+    - platform: browser
+      entry: "./client/index.ts"
+      outputName: client.js
+      minify: true
+    - platform: node
+      entry: "./server/index.ts"
+      outputName: server.js

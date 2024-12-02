@@ -114,6 +114,7 @@ export function findResourcesToBuild(dirPath = rootSourcePath, resourceMap = ini
  * @returns {Promise<void>} A promise that resolves when the build is complete.
  */
 export async function buildResource(resource, resourceMap, watch, onBuildComplete) {
+	console.log(resourceMap);
 	try {
 		const resourceInfo = resourceMap.resourceInfo[resource];
 		const entryPoints = resourceInfo.build;

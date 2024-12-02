@@ -1,9 +1,10 @@
+import Characters from "./apps/characters/characters";
 import React from "react";
 
 const getAppComponent = (app: string) => {
 	switch (app) {
-		case "test":
-			return <h1>Hello</h1>;
+		case "characters":
+			return <Characters />;
 		default:
 			return null;
 	}

@@ -5,12 +5,10 @@ import { useNuiEvent } from "./hooks/useNuiEvent";
 import store from "./store/store";
 import { fetchNui, isEnvBrowser } from "./utils";
 import getAppComponent from "./app-component";
-import { Button } from "./components/button/button";
 import { cn } from "@utils/styles";
 import "@mantine/core/styles.css";
 
 import { MantineProvider } from "@mantine/core";
-import { PinInput } from "@mantine/core";
 import { baseTheme } from "./styles";
 
 export default function App() {
@@ -41,9 +39,6 @@ export default function App() {
 				)}
 			>
 				{visibleApp ? cloneElement(visibleApp, { key: visibleApp.key || visibleApp.type }) : null}
-				<div className='absolute top-0 left-0 w-full h-full flex items-center justify-center'>
-					<PinInput />
-				</div>
 			</div>
 		</MantineProvider>
 	);

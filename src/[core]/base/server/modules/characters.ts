@@ -1,4 +1,4 @@
-import type { CharacterWithData } from "@/types/base";
+import type { CharacterWithData } from "@/types";
 import { type CharacterStats, db, type Character as CharacterType, type CharacterPosition, type User } from "../db";
 import { Character } from "./character";
 import { CHARACTER_STATS_DEFAULTS, CHARACTER_POSITION_DEFAULTS } from "../data/defaults";
