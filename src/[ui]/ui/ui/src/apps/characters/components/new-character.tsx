@@ -10,6 +10,7 @@ import { useState } from "react";
 import { fetchNui } from "@utils/index";
 import nationalities from "../data/nationalities.json";
 import { motion } from "motion/react";
+import anims from "@styles/anims";
 
 dayjs.extend(customParseFormat);
 const DATE_FORMAT = "YYYY-MM-DD";
@@ -87,7 +88,10 @@ export default function NewCharacter() {
 	};
 
 	return (
-		<motion.div className='w-full h-full flex items-center justify-center'>
+		<motion.div
+			{...anims.scale}
+			className='w-full h-full flex items-center justify-center'
+		>
 			<form
 				onSubmit={form.onSubmit(handleCreateCharacter, (validationErrors, values, event) => {
 					console.log(validationErrors, values, event);
@@ -113,7 +117,7 @@ export default function NewCharacter() {
 					<DateInput
 						label='Date of Birth'
 						value={dob}
-                        // @ts-ignore
+						// @ts-ignore
 						onChange={setDob}
 						minDate={minDate.toDate()}
 						maxDate={maxDate.toDate()}
