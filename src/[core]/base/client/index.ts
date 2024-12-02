@@ -23,6 +23,8 @@ async function Main() {
     SetEntityCoordsNoOffset(ped, 449.194, -651.431, 28.486, true, false, false);
 	SetEntityCoordsNoOffset(ped, 449.194, -651.431, 28.486, true, false, false);
 	FreezeEntityPosition(ped, false);
+
+	TriggerEvent("spawn:init");
 }
 
 Main();

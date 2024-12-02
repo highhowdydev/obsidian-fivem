@@ -2,6 +2,7 @@ import type { CharacterWithData } from "@/types";
 import { type CharacterStats } from "../db";
 import * as characters from "./characters";
 
+global.exports("GetUser", (source: string, includeCharacters?: boolean) => characters.GetUser(source, includeCharacters));
 global.exports("GetCharacter", (source: string) => characters.GetCharacter(source));
 global.exports("GetCharacterData", (source: string) => characters.GetCharacterData(source));
 global.exports("DropActivePlayer", (source: string) => characters.DropActivePlayer(source));

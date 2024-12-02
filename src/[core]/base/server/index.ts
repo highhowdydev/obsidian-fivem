@@ -1,5 +1,6 @@
 import { db, establishConnection } from "./db";
 import "./modules/characters";
+import "./modules/exports";
 
 import lib from "@overextended/ox_lib/server";
 import { characters, GetUser } from "./modules/characters";

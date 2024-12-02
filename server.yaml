@@ -25,6 +25,7 @@ resources:
     - base
     - binds
     - ui
+    - spawn
 
 groups:
     - name: "admin"

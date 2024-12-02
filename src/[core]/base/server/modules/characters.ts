@@ -1,4 +1,4 @@
-import type { CharacterWithData } from "@/types";
+import type { CharacterWithData, UserWithOptionalCharacters } from "@/types/base";
 import { type CharacterStats, db, type Character as CharacterType, type CharacterPosition, type User } from "../db";
 import { Character } from "./character";
 import { CHARACTER_STATS_DEFAULTS, CHARACTER_POSITION_DEFAULTS } from "../data/defaults";
@@ -11,19 +11,27 @@ class Characters {
 		return this.characters[source];
 	}
 
-	public async getUser(source: string) {
+	public async getUser(source: string, includeCharacters?: boolean): Promise<UserWithOptionalCharacters> {
 		const identifiers = GetIdentifiers(source);
 
 		const exists = await db.user.findFirst({
 			where: {
 				steam: identifiers.steam,
 			},
+			...(includeCharacters && {
+				include: {
+					characters: true,
+				},
+			}),
 		});
 
 		if (exists) return exists;
 
 		return await db.user.create({
 			data: identifiers,
+			include: {
+				characters: includeCharacters,
+			},
 		});
 	}
 
@@ -65,7 +73,7 @@ class Characters {
 
 export const characters = new Characters();
 
-export const GetUser = (source: string) => characters.getUser(source);
+export const GetUser = (source: string, includeCharacters?: boolean) => characters.getUser(source, includeCharacters);
 export const GetCharacter = (source: string) => characters.getCharacter(source);
 export const DropActivePlayer = (source: string) => characters.dropActivePlayer(source);
 export const GetCharacterData = (source: string) => characters.getCharacterData(source);
