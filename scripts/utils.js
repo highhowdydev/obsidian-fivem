@@ -130,7 +130,7 @@ export async function buildResource(resource, resourceMap, watch, onBuildComplet
 						resourceMap.source,
 						resourceMap.output,
 						resourceInfo.relativePath,
-						watch,
+						false,
 					);
 					break;
 				default:

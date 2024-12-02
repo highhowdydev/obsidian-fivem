@@ -20,6 +20,8 @@ model User {
   license    String
   discord    String
   ip         String
+  name       String
+  fivem      String
   characters Character[]
 
   createdAt DateTime @default(now())

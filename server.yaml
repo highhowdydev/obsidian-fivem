@@ -21,8 +21,10 @@ server_tags:
 
 resources:
     # FiveM System Resources
-    - evh-base
-    - ui-resource
+    - ox_lib
+    - base
+    - binds
+    - ui
 
 groups:
     - name: "admin"
@@ -43,6 +45,10 @@ extras:
     - "set onesync_workaround763185 true"
     - "set onesync_forceMigration true"
     - "set onesync_distanceCullVehicles true"
+    - "add_ace resource.ox_lib command.add_ace allow"
+    - "add_ace resource.ox_lib command.remove_ace allow"
+    - "add_ace resource.ox_lib command.add_principal allow"
+    - "add_ace resource.ox_lib command.remove_principal allow"
 
 assets:
     - directory: maps

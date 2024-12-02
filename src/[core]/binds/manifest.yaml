@@ -1,0 +1,5 @@
+build:
+- platform: browser
+  entry: "./client/index.ts"
+  outputName: client.js
+  minify: true

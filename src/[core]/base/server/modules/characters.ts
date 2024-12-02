@@ -65,6 +65,7 @@ class Characters {
 
 export const characters = new Characters();
 
+export const GetUser = (source: string) => characters.getUser(source);
 export const GetCharacter = (source: string) => characters.getCharacter(source);
 export const DropActivePlayer = (source: string) => characters.dropActivePlayer(source);
 export const GetCharacterData = (source: string) => characters.getCharacterData(source);
