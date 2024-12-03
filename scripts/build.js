@@ -12,9 +12,9 @@ async function main() {
     const { target, w, watch } = minimist(process.argv.slice(2));
     const watching = watch || w;
 
-    if (!target) emptyBuildDir();
-
-    const resources = findResourcesToBuild();
+    if (!target && !watch) emptyBuildDir();
+    const targets = target ? target.split("/") : false;
+    const resources = findResourcesToBuild(targets);
 
     let resourcesCount = resources.resources.length;
     spinner.text = `Building ${resourcesCount} resources...\n`;

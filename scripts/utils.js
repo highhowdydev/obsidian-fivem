@@ -54,7 +54,7 @@ export function emptyBuildDir() {
  * @param {object} [resourceMap=initialResourceMap] - The resource map to add resources to.
  * @returns {object} The resource map with the newly found resources.
  */
-export function findResourcesToBuild(dirPath = rootSourcePath, resourceMap = initialResourceMap) {
+export function findResourcesToBuild(targets, dirPath = rootSourcePath, resourceMap = initialResourceMap) {
 	const contained = fs.readdirSync(dirPath);
 	const config = getServerConfig();
 
@@ -70,7 +70,7 @@ export function findResourcesToBuild(dirPath = rootSourcePath, resourceMap = ini
 		const isCategory = categoryExp.test(item);
 
 		if (isCategory) {
-			findResourcesToBuild(itemPath, resourceMap);
+			findResourcesToBuild(targets, itemPath, resourceMap);
 			continue;
 		}
 
@@ -102,6 +102,15 @@ export function findResourcesToBuild(dirPath = rootSourcePath, resourceMap = ini
 		}
 	}
 
+	if (targets) {
+		const resources = resourceMap.resources.filter(resource => !targets.includes(resource));
+
+		for (const res of resources) {
+			delete resourceMap.resourceInfo[res];
+			resourceMap.resources.splice(resourceMap.resources.indexOf(res), 1);
+		}
+	}
+
 	return resourceMap;
 }
 
@@ -114,7 +123,6 @@ export function findResourcesToBuild(dirPath = rootSourcePath, resourceMap = ini
  * @returns {Promise<void>} A promise that resolves when the build is complete.
  */
 export async function buildResource(resource, resourceMap, watch, onBuildComplete) {
-	console.log(resourceMap);
 	try {
 		const resourceInfo = resourceMap.resourceInfo[resource];
 		const entryPoints = resourceInfo.build;
@@ -180,7 +188,7 @@ async function withEntryWithESBuild(item, source, output, relativePath, watch) {
 		target: [item.target ? item.target : "esnext"],
 		format: item.format ? item.format : item.platform === "node" ? "cjs" : "iife",
 		bundle: true,
-		logLevel: "error",
+		logLevel: "warning",
 		sourcemap: true,
 		minify: item.minify ? item.minify : false,
 		plugins: [fileLoc.filelocPlugin()],

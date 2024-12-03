@@ -20,7 +20,12 @@ class Characters {
 			},
 			...(includeCharacters && {
 				include: {
-					characters: true,
+					characters: {
+						include: {
+							stats: true,
+							position: true,
+						}
+					},
 				},
 			}),
 		});

@@ -21,11 +21,15 @@ server_tags:
 
 resources:
     # FiveM System Resources
+    - "[fivem]"
+    # Third Party
     - ox_lib
+    # Howdy Framework
     - base
     - binds
     - ui
     - spawn
+    - gameplay
 
 groups:
     - name: "admin"

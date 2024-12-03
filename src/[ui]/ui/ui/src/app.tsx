@@ -10,6 +10,7 @@ import "@mantine/core/styles.css";
 
 import { MantineProvider } from "@mantine/core";
 import { baseTheme } from "./styles";
+import Chat from "./apps/chat/chat";
 
 export default function App() {
 	const { application, init } = useSelector((state: RootState) => state.root);
@@ -39,6 +40,7 @@ export default function App() {
 				)}
 			>
 				{visibleApp ? cloneElement(visibleApp, { key: visibleApp.key || visibleApp.type }) : null}
+				<Chat />
 			</div>
 		</MantineProvider>
 	);
