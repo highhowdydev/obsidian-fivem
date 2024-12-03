@@ -24,7 +24,7 @@ NuiCallback("nui:onClose", (_, cb: Function) => {
 	cb(1);
 });
 
-NuiCallback("nui:init", (_, cb: (...args: any) => void) => {
+NuiCallback("initializeNui", (_, cb: (...args: any) => void) => {
 	init = true;
 });
 
@@ -34,7 +34,7 @@ export async function SetApplication(application: string, focus: boolean, forceS
 
 	await EnsureInit();
 
-	DispatchNuiEvent("setApplication", { application });
+	DispatchNuiEvent("root/setApplication", { application });
 
 	currentApp = application;
 	if (focus) SetNUIFocus(true, true);
@@ -44,7 +44,7 @@ export async function SetApplication(application: string, focus: boolean, forceS
 
 export function CloseCurrentApplication() {
 	SetNUIFocus(false, false);
-	DispatchNuiEvent("setApplication", { application: "" });
+	DispatchNuiEvent("root/setApplication", { application: "" });
 	currentApp = "";
 }
 

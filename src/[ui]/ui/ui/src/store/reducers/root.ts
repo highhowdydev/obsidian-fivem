@@ -1,7 +1,7 @@
 import { isEnvBrowser } from "../../utils";
 
 const initialState = {
-	application: isEnvBrowser() ? "characters" : "",
+	application: isEnvBrowser() ? "characters" : "characters",
 	debug: false,
 	init: false,
 	blobs: [],
@@ -9,17 +9,17 @@ const initialState = {
 
 const rootReducer = (state = initialState, action: any) => {
 	switch (action.type) {
-		case "root:setApplication":
+		case "root/setApplication":
 			return {
 				...state,
 				application: action.payload.application,
 			};
-		case "root:setDebug":
+		case "root/setDebug":
 			return {
 				...state,
 				debug: action.payload.debug,
 			};
-		case "root:initialize":
+		case "root/initialize":
 			return {
 				...state,
 				init: true,

@@ -7,3 +7,11 @@ export type SpawnData = {
     icon: string;
     onSelect: (closeApps: Function) => Promise<void>;
 }
+
+export type CreateCharacter = {
+    dob: string;
+    firstName: string;
+    lastName: string;
+    gender: "Male" | "Female",
+    nationality: string;
+}

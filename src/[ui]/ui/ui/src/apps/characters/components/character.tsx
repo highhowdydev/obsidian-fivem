@@ -1,7 +1,11 @@
+import { RootState } from "@store/index";
 import { CharacterType } from "@store/reducers/characters/types";
 import store from "@store/store";
+import { CloseApplication } from "@utils/application";
+import { fetchNui } from "@utils/index";
 import { cn } from "@utils/styles";
 import { FaPlus } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 type CharacterProps = {
 	character: CharacterType | null;
@@ -22,12 +26,49 @@ export default function Character({ character }: CharacterProps) {
 					opacity: "12%",
 				}}
 			></div>
-			{character ? <h1>Character</h1> : <NewCharacter />}
+			{character ? <ExistingCharacterSlot character={character} /> : <NewCharacterSlot />}
 		</div>
 	);
 }
 
-function NewCharacter() {
+function ExistingCharacterSlot({character}: CharacterProps) {
+	const isBusy = useSelector((state: RootState) => state.characters.isBusy);
+
+	const handleSelectCharacter = async () => {
+		if (isBusy) return;
+
+		store.dispatch({
+			type: "characters/setBusy",
+			payload: true,
+		})
+
+		const result: any = await fetchNui("characters:selectCharacter", character);
+
+		if (result.success === true) {
+			store.dispatch({
+				type: "characters/reset"
+			})
+
+			CloseApplication("characters");
+			return;
+		}
+
+		store.dispatch({
+			type: "characters/setBusy",
+			payload: false
+		})
+	}
+
+	return (
+		<div onDoubleClick={handleSelectCharacter} className={cn("flex flex-col w-full h-full opacity-60 hover:opacity-100 transition-opacity duration-300 overflow-hidden")}>
+			<div className="mt-auto text-center lime-clamp-1 z-50">
+				{character?.data.firstName} {character?.data.lastName}
+			</div>
+		</div>
+	)
+}
+
+function NewCharacterSlot() {
 	const handleCreateCharacter = () => {
 		store.dispatch({
 			type: "characters/setCreatingCharacter",

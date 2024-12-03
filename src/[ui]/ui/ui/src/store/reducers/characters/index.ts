@@ -50,19 +50,23 @@ export const charactersReducer = (state = defaultState, action: any) => {
 				displayCharacter: action.payload,
 			};
 		case "characters/setCharacters":
+			const characters = buildCharacterList(action.payload.characters)
+			const hasCharacters = characters.some((character) => character !== null);
+
 			return {
 				...state,
-				characters: action.payload,
+				characters: buildCharacterList(action.payload.characters),
+				isCreating: !hasCharacters,
 			};
 		case "characters/setCreatingCharacter":
 			return {
 				...state,
 				creatingCharacter: action.payload.creating,
 			};
-		case "characters/charactersCreated":
+		case "characters/characterCreated":
 			return {
 				...state,
-				characters: action.payload.characters,
+				characters: buildCharacterList(action.payload.characters),
 				newCharacter: defaultState.newCharacter,
 				creatingCharacter: false,
 				isBusy: false,
@@ -75,7 +79,7 @@ export const charactersReducer = (state = defaultState, action: any) => {
 		case "characters/charactersDeleted":
 			return {
 				...state,
-				characters: action.payload,
+				characters: buildCharacterList(action.payload),
 				isDeleting: false,
 				isBusy: false,
 			};

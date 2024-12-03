@@ -1,4 +1,6 @@
 export * from "./streaming";
+export * from "./vector3";
+export * from "./quaternion";
 
 export const Delay = async (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 export const Clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);

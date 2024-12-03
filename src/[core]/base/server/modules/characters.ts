@@ -68,6 +68,7 @@ class Characters {
 
 	public setCharacter(source: string, character: CharacterWithData) {
 		this.characters[source] = new Character(character);
+		return this.characters[source];
 	}
 }
 
@@ -77,6 +78,8 @@ export const GetUser = (source: string, includeCharacters?: boolean) => characte
 export const GetCharacter = (source: string) => characters.getCharacter(source);
 export const DropActivePlayer = (source: string) => characters.dropActivePlayer(source);
 export const GetCharacterData = (source: string) => characters.getCharacterData(source);
+export const CreateCharacter = async (source: string, data: Partial<CharacterType>) =>
+	await characters.createCharacter(source, data);
 export const SetCharacter = (source: string, character: CharacterWithData) =>
 	characters.setCharacter(source, character);
 
