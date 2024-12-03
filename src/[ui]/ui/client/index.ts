@@ -75,7 +75,7 @@ export async function SendMessageToNui(event: string, data: any) {
 export async function DispatchNuiEvent(action: string, payload = {}) {
 	await EnsureInit();
 
-	// console.log(action, payload);
+	console.log(action, payload);
 
 	SendNUIMessage({
 		event: "payload",
@@ -97,3 +97,5 @@ global.exports("SetApplication", SetApplication);
 global.exports("SendMessageToNui", SendMessageToNui);
 global.exports("SetFocus", SetFocus);
 global.exports("CloseCurrentApplication", CloseCurrentApplication);
+
+import "./modules/chat";

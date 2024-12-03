@@ -1,18 +1,23 @@
 build:
-- platform: browser
-  entry: "./client/index.ts"
-  outputName: client.js
-  minify: true
-- platform: node
-  build: "vite"
-  entry: "./ui/index.html"
-  outputName: server.js
-  tailwindcss: "./ui/tailwind.config.js"
-  publicDir: "./ui/public"
-  alias:
-    "@components": "/src/components"
-    "@hooks": "/src/hooks"
-    "@types": "/src/types"
-    "@utils": "/src/utils"
-    "@styles": "/src/styles"
-    "@store": "/src/store"
+    - platform: browser
+      entry: "./client/index.ts"
+      outputName: client.js
+      minify: true
+    - platform: node
+      entry: "./server/index.ts"
+      outputName: server.js
+    - platform: node
+      build: "vite"
+      entry: "./ui/index.html"
+      outputName: server.js
+      tailwindcss: "./ui/tailwind.config.js"
+      publicDir: "./ui/public"
+      alias:
+          "@components": "/src/components"
+          "@hooks": "/src/hooks"
+          "@types": "/src/types"
+          "@utils": "/src/utils"
+          "@styles": "/src/styles"
+          "@store": "/src/store"
+move:
+    - lua
