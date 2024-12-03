@@ -31,6 +31,18 @@ on("chat:init", () => refreshCommands(source));
 
 on("onServerResourceStart", async (resName: string) => {
 	await Delay(500);
-	// @ts-expect-error
-	for (const player in GetPlayers()) refreshCommands(player);
+	for (const player in GetActivePlayers()) refreshCommands(player);
 });
+
+function GetActivePlayers() {
+	const playerNum = GetNumPlayerIndices();
+	const players: number[] = [];
+
+	for (let i = 0; i < playerNum; i++) {
+		const player = GetPlayerFromIndex(i);
+		if (!player) continue;
+		players.push(+player);
+	}
+
+	return players;
+}
