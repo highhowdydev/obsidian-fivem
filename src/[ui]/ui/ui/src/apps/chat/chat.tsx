@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 import ChatMessage from "./components/chat-message";
 import { cn } from "@utils/styles";
 import { getChannelColor, getFilteredChannelMessages } from "./utils";
-import useKeyPress from "@hooks/useKeyPress";
 import { useKeyListener } from "@hooks/useKeyListener";
 import Suggestions from "./components/suggestions";
 
@@ -16,19 +15,34 @@ const CHANNELS = ["all", "ooc", "me", "dispatch", "staff"] as const;
 
 export default function Chat() {
 	const [message, setMessage] = useState("");
+	const messageHistory = useRef<string[]>([]);
+	const [historyIndex, setHistoryIndex] = useState(-1);
 	const state = useSelector((state: RootState) => state.chat);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const messageBoxRef = useRef<HTMLDivElement>(null);
 
+	const closeChatHandler = async (keepVisible?: boolean) => {
+		await fetchNui("onCloseChatUI");
+		setMessage("");
+
+		store.dispatch({
+			type: "chat/setOpen",
+			payload: { open: false },
+		});
+	};
+
 	const handleSubmitChat = () => {
 		if (!message || !message.trim().length) return;
 
+		messageHistory.current.unshift(message);
+		messageHistory.current = messageHistory.current.slice(0, 10);
+		setHistoryIndex(-1);
+
+		setMessage("");
 		fetchNui("chatResult", {
 			message,
 			channel: state.channel,
 		});
-
-		setMessage("");
 	};
 
 	const handleTabPress = (e: KeyboardEvent) => {
@@ -37,16 +51,29 @@ export default function Chat() {
 		const currentChannel = state.channel;
 		const channel = CHANNELS[CHANNELS.indexOf(currentChannel) + 1];
 
-		if (channel) {
+		if (channel)
 			store.dispatch({
 				type: "chat/setChannel",
 				payload: { channel },
 			});
-		} else {
+		else
 			store.dispatch({
 				type: "chat/setChannel",
 				payload: { channel: CHANNELS[0] },
 			});
+	};
+
+	const handleKeyDown = (e: React.KeyboardEvent) => {
+		switch (e.key) {
+			case "Enter":
+				handleSubmitChat();
+				break;
+			case "ArrowUp":
+				if (historyIndex + 1 < messageHistory.current.length) setHistoryIndex(historyIndex + 1);
+				break;
+			case "ArrowDown":
+				if (historyIndex - 1 >= 0) setHistoryIndex(historyIndex - 1);
+				break;
 		}
 	};
 
@@ -54,12 +81,12 @@ export default function Chat() {
 		clearInterval(state.interval);
 
 		if (state.visible && !isEnvBrowser()) {
-			const interval = setInterval(() => {
-				if (state.open) return;
+			const interval = setTimeout(() => {
 				store.dispatch({
 					type: "chat/setVisible",
 					payload: { visible: false },
 				});
+				clearInterval(interval);
 			}, 5000);
 
 			store.dispatch({
@@ -76,6 +103,11 @@ export default function Chat() {
 	}, [state.open]);
 
 	useEffect(() => {
+		if (historyIndex === -1) return;
+		setMessage(messageHistory.current[historyIndex]);
+	}, [historyIndex]);
+
+	useEffect(() => {
 		if (!state.visible) return;
 
 		messageBoxRef.current?.scrollTo({
@@ -85,17 +117,7 @@ export default function Chat() {
 
 	useKeyListener("Escape", () => {
 		if (!state.open) return;
-		fetchNui("onCloseChatUI");
-
-		store.dispatch({
-			type: "chat/setOpen",
-			payload: { open: false },
-		});
-
-		store.dispatch({
-			type: "chat/setVisible",
-			payload: { visible: false },
-		});
+		closeChatHandler();
 	});
 
 	const messages = getFilteredChannelMessages(state.messages, state.channel);
@@ -140,19 +162,18 @@ export default function Chat() {
 										{state.channel}
 									</div>
 									<Input
+										onBlur={() => state.open && inputRef.current?.focus()}
 										value={message}
 										onChange={e => setMessage(e.target.value)}
 										maxLength={150}
-										onKeyDown={(e: any) => e.key === "Enter" && handleSubmitChat()}
+										onKeyDown={handleKeyDown}
 										ref={inputRef}
 										className='w-full transition-all duration-300'
 										placeholder='Press TAB to cycle channels'
 									/>
 								</motion.div>
 							)}
-							{command && command.trim().length && (
-								<Suggestions command={command} fullText={message} />
-							)}
+							{command && command.trim().length && <Suggestions command={command} fullText={message} />}
 						</motion.div>
 					))}
 			</AnimatePresence>

@@ -18,7 +18,6 @@ onClientCallback(
 
 onClientCallback("spawn:selectCharacter", async (playerId: number, data: CharacterWithData) => {
 	const character = global.exports.base.SetCharacter(String(playerId), data);
-	console.log(data);
 
 	if (!character) {
 		return {

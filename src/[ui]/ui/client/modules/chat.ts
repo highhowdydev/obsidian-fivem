@@ -1,19 +1,27 @@
 import { SetNUIFocus } from "@/utils/client/ui";
 import { DispatchNuiEvent, NuiCallback, SetFocus } from "..";
 import { ChatResult } from "@/types/chat";
+import { Delay } from "@/utils/shared";
 
-onNet("chatMessage", function (author: string, type: string, message: any) {
-	const args = { message };
+const CHAT_CHANNELS = ["all", "ooc", "looc", "me", "info"];
+
+onNet("chatMessage", function (author: string, channel: string, message: any) {
+	if (!CHAT_CHANNELS.includes(channel)) return;
+	DispatchNuiEvent("chat/addMessage", { message: { author, channel, message } });
 });
 
-onNet("chat:addMessage", function (message: any) {});
 onNet("chat:addSuggestion", function (name: string, help: string, params: any) {
-	console.log(name, help, params);
-	emitNet("printToServer", JSON.stringify({ name, help, params }));
+	DispatchNuiEvent("chat/addSuggestion", { suggestion: { name, help, params } });
 });
-onNet("chat:addSuggestions", function (suggestions: any) {});
-onNet("chat:removeSuggestion", function (name: string) {});
-onNet("chat:clear", function () {});
+onNet("chat:addSuggestions", function (suggestions: any) {
+	for (const suggestion of suggestions) DispatchNuiEvent("chat/addSuggestion", { suggestion });
+});
+onNet("chat:removeSuggestion", function (name: string) {
+	DispatchNuiEvent("chat/removeSuggestion", { name });
+});
+onNet("chat:clear", function () {
+	DispatchNuiEvent("chat/clear");
+});
 
 let chatOpen = false;
 
@@ -24,9 +32,14 @@ global.exports.binds.createBind({
 	allowNui: false,
 	async keydown() {
 		if (chatOpen || !LocalPlayer.state.loggedIn) return;
-		chatOpen = false;
+		chatOpen = true;
 		DispatchNuiEvent("chat/setOpen", { open: true });
 		SetFocus(true, false, false);
+
+		while (chatOpen) {
+			DisableAllControlActions(0);
+			await Delay(0);
+		}
 	},
 });
 
@@ -43,4 +56,4 @@ setTimeout(() => {
 		ExecuteCommand(data.message);
 		cb(1);
 	});
-}, 2000);
+}, 100);

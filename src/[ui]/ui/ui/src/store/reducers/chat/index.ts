@@ -16,6 +16,10 @@ export const defaultState: ChatState = {
 					name: "message",
 					help: "The message you want to say",
 				},
+				{
+					name: "networked",
+					help: "Whether the message should be networked (true/false)",
+				},
 			],
 		},
 	],
@@ -47,6 +51,21 @@ export const chatReducer = (state = defaultState, action: any) => {
 			return {
 				...state,
 				messages: [...state.messages, action.payload.message],
+			};
+		case "chat/addSuggestion":
+			return {
+				...state,
+				suggestions: [...state.suggestions, action.payload.suggestion],
+			};
+		case "chat/removeSuggestion":
+			return {
+				...state,
+				suggestions: state.suggestions.filter(suggestion => suggestion.name !== action.payload.name),
+			};
+		case "chat/clear":
+			return {
+				...state,
+				messages: [],
 			};
 		default:
 			return state;

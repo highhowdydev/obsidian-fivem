@@ -4,7 +4,7 @@ import * as characters from "./characters";
 import { CharacterType } from "@/[ui]/ui/ui/src/store/reducers/characters/types";
 
 global.exports("GetUser", (source: string, includeCharacters?: boolean) =>
-	characters.GetUser(source, includeCharacters),
+	characters.GetUser(String(source), includeCharacters),
 );
 global.exports("GetCharacter", (source: string) => characters.GetCharacter(source));
 global.exports("GetCharacterData", (source: string) => characters.GetCharacterData(source));
@@ -15,14 +15,14 @@ global.exports("DropActivePlayer", (source: string) => characters.DropActivePlay
 global.exports("SetCharacter", (source: string, character: CharacterWithData) =>
 	characters.SetCharacter(source, character),
 );
-global.exports("updateCharacterName", (source: string, firstName: string, lastName: string) =>
-	characters.updateCharacterName(source, firstName, lastName),
+global.exports("UpdateCharacterName", async (source: string, firstName: string, lastName: string) =>
+	await characters.updateCharacterName(source, firstName, lastName),
 );
-global.exports("updateCharacterStats", (source: string, stats: Partial<CharacterStats>) =>
-	characters.updateCharacterStats(source, stats),
+global.exports("UpdateCharacterStats", async (source: string, stats: Partial<CharacterStats>) =>
+	await characters.updateCharacterStats(source, stats),
 );
-global.exports("updateCharacterPosition", (source: string, x: number, y: number, z: number, heading: number) =>
-	characters.updateCharacterPosition(source, x, y, z, heading),
+global.exports("UpdateCharacterPosition", async (source: string, x: number, y: number, z: number, heading: number) =>
+	await characters.updateCharacterPosition(source, x, y, z, heading),
 );
 
 export * from "./characters";

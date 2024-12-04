@@ -17,8 +17,8 @@ export default function Suggestions({ command, fullText }: SuggestionsProps) {
 
 	return (
 		<div className='flex flex-col gap-2'>
-			{filteredSuggestions.map(suggestion => (
-				<Suggestion key={suggestion.name} suggestion={suggestion} userParams={userParams} />
+			{filteredSuggestions.map((suggestion) => (
+				<Suggestion key={suggestion.name} suggestion={suggestion} userParams={userParams}  />
 			))}
 		</div>
 	);

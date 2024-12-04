@@ -8,7 +8,7 @@ class Characters {
 	public characters: Record<string, Character> = {};
 
 	public getCharacter(source: string) {
-		return this.characters[source];
+		return this.characters[String(source)];
 	}
 
 	public async getUser(source: string, includeCharacters?: boolean): Promise<UserWithOptionalCharacters> {
@@ -24,7 +24,7 @@ class Characters {
 						include: {
 							stats: true,
 							position: true,
-						}
+						},
 					},
 				},
 			}),
@@ -64,16 +64,21 @@ class Characters {
 	}
 
 	public dropActivePlayer(source: string) {
-		delete this.characters[source];
+		delete this.characters[String(source)];
 	}
 
 	public getCharacterData(source: string) {
-		return this.characters[source];
+		return this.characters[String(source)]?.data;
 	}
 
 	public setCharacter(source: string, character: CharacterWithData) {
-		this.characters[source] = new Character(character);
-		return this.characters[source];
+		this.characters[String(source)] = new Character(character);
+		console.log(
+			`setting source ${source} to character ${this.characters[String(source)].data.firstName} ${
+				this.characters[String(source)].data.lastName
+			}`,
+		);
+		return this.characters[String(source)];
 	}
 }
 
