@@ -9,7 +9,6 @@ LocalPlayer.state.set("dead", false, false);
 LocalPlayer.state.set("cuffed", 0, true);
 
 (async () => {
-    console.log("fuck you bitch");
     if (!IsPedInAnyVehicle(PlayerPedId(), false)) DisplayRadar(false);
 
     while (!LocalPlayer.state.loggedIn) {

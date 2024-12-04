@@ -7,7 +7,10 @@ onNet("chatMessage", function (author: string, type: string, message: any) {
 });
 
 onNet("chat:addMessage", function (message: any) {});
-onNet("chat:addSuggestion", function (name: string, help: string, params: any) {});
+onNet("chat:addSuggestion", function (name: string, help: string, params: any) {
+	console.log(name, help, params);
+	emitNet("printToServer", JSON.stringify({ name, help, params }));
+});
 onNet("chat:addSuggestions", function (suggestions: any) {});
 onNet("chat:removeSuggestion", function (name: string) {});
 onNet("chat:clear", function () {});

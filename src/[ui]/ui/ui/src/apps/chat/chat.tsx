@@ -10,6 +10,7 @@ import { cn } from "@utils/styles";
 import { getChannelColor, getFilteredChannelMessages } from "./utils";
 import useKeyPress from "@hooks/useKeyPress";
 import { useKeyListener } from "@hooks/useKeyListener";
+import Suggestions from "./components/suggestions";
 
 const CHANNELS = ["all", "ooc", "me", "dispatch", "staff"] as const;
 
@@ -98,6 +99,7 @@ export default function Chat() {
 	});
 
 	const messages = getFilteredChannelMessages(state.messages, state.channel);
+	const command = message.split(" ")[0];
 
 	return (
 		<div className='absolute top-0 left-0 w-full' tabIndex={-1}>
@@ -147,6 +149,9 @@ export default function Chat() {
 										placeholder='Press TAB to cycle channels'
 									/>
 								</motion.div>
+							)}
+							{command && command.trim().length && (
+								<Suggestions command={command} fullText={message} />
 							)}
 						</motion.div>
 					))}
