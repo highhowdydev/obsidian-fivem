@@ -2,11 +2,17 @@ import { isEnvBrowser } from "@utils/index";
 import { ChatState } from "./types";
 
 export const defaultState: ChatState = {
-	visible: false,
+	visible: true,
 	interval: -1,
 	open: isEnvBrowser() ? true : false,
 	channel: "all",
-	messages: [],
+	messages: [
+		{
+			message: "Welcome to the chat!",
+			author: "Author",
+			channel: "ooc",
+		}
+	],
 	suggestions: [
 		{
 			name: "/me",

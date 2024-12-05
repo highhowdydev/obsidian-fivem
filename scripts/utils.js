@@ -54,7 +54,7 @@ export function emptyBuildDir() {
  * @param {object} [resourceMap=initialResourceMap] - The resource map to add resources to.
  * @returns {object} The resource map with the newly found resources.
  */
-export function findResourcesToBuild(targets, dirPath = rootSourcePath, resourceMap = initialResourceMap) {
+export function findResourcesToBuild(targets, skipweb, dirPath = rootSourcePath, resourceMap = initialResourceMap) {
 	const contained = fs.readdirSync(dirPath);
 	const config = getServerConfig();
 
@@ -70,7 +70,7 @@ export function findResourcesToBuild(targets, dirPath = rootSourcePath, resource
 		const isCategory = categoryExp.test(item);
 
 		if (isCategory) {
-			findResourcesToBuild(targets, itemPath, resourceMap);
+			findResourcesToBuild(targets, skipweb, itemPath, resourceMap);
 			continue;
 		}
 
@@ -91,13 +91,23 @@ export function findResourcesToBuild(targets, dirPath = rootSourcePath, resource
 					throw new Error("Missing fxmanifest.lua or manifest.yaml");
 
 				const manifest = YAML.parse(fs.readFileSync(manifestPath, "utf-8"));
+				let skip = false;
+
+				if (skipweb) {
+					for (const build of manifest.build) {
+						if (build.build === "vite") skip = true;
+					}
+				}
+
 				info.build = manifest.build ? manifest.build : [];
 				info.copy = manifest.copy ? [...manifest.copy, "fxmanifest.lua"] : ["fxmanifest.lua"];
+				
+				if (!skip) {
+					resourceMap.resources.push(item);
+					resourceMap.resourceInfo[item] = info;
+				}
 			} catch (error) {
 				info.error = error;
-			} finally {
-				resourceMap.resources.push(item);
-				resourceMap.resourceInfo[item] = info;
 			}
 		}
 	}

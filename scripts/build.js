@@ -9,12 +9,12 @@ async function main() {
     spinner.start("Building resources...");
     const currentTime = Date.now();
     const jobs = [];
-    const { target, w, watch } = minimist(process.argv.slice(2));
+    const { target, w, watch, skipweb } = minimist(process.argv.slice(2));
     const watching = watch || w;
 
     if (!target && !watch) emptyBuildDir();
     const targets = target ? target.split("/") : false;
-    const resources = findResourcesToBuild(targets);
+    const resources = findResourcesToBuild(targets, skipweb);
 
     let resourcesCount = resources.resources.length;
     spinner.text = `Building ${resourcesCount} resources...\n`;
