@@ -11,7 +11,7 @@ function findWebResources() {
     output = resources.output;
 
     const webResources = [];
-    
+
     for (const resource of resources.resources) {
         const info = resources.resourceInfo[resource];
         const builds = info.build;
@@ -38,8 +38,8 @@ async function main() {
 			type: "list",
 			name: "selectedResource",
 			message: "Select a web resource to start",
-			choices: resources.map(resource => ({
-				name: `${resource.name}`,
+			choices: resources.map((resource, index) => ({
+				name: `${index+1}. ${resource.name}`,
                 value: resource
 			})),
 		},
