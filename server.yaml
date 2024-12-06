@@ -20,11 +20,8 @@ server_tags:
     - custom
 
 resources:
-    # FiveM System Resources
     - "[fivem]"
-    # Third Party
     - ox_lib
-    # Howdy Framework
     - base
     - binds
     - ui

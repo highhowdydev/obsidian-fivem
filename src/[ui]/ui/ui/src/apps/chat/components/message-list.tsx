@@ -7,8 +7,6 @@ import { getFilteredChannelMessages } from "../utils";
 import ChatMessage from "./chat-message";
 import { ChatInput } from "./chat-input";
 
-const CHANNELS = ["all", "ooc", "me", "dispatch", "staff"] as const;
-
 export function MessageList() {
 	const [closeTimer, setCloseTimer] = useState<NodeJS.Timeout | null>(null);
 	const state = useSelector((state: RootState) => state.chat);
@@ -16,7 +14,7 @@ export function MessageList() {
 	const messages = getFilteredChannelMessages(state.messages, state.channel);
 
 	useEffect(() => {
-        if (closeTimer) clearInterval(closeTimer);
+		if (closeTimer) clearInterval(closeTimer);
 
 		const timeout = setTimeout(() => {
 			store.dispatch({ type: "chat/setVisible", payload: { visible: false } });
@@ -29,6 +27,14 @@ export function MessageList() {
 			if (timeout) clearTimeout(timeout);
 		};
 	}, [state.visible]);
+
+	useEffect(() => {
+		if (!state.visible) return;
+
+		messageBoxRef.current?.scrollTo({
+			top: messageBoxRef.current.scrollHeight,
+		});
+	}, [state.messages, state.channel]);
 
 	return (
 		<motion.div

@@ -1,7 +1,7 @@
 fx_version 'cerulean'
 game 'gta5'
 
-description 'UI for Eleventh Hour Framework'
+description 'Gameplay for Howdy Framework'
 version '1.0.0'
 
 client_script 'client.js'

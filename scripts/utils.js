@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import path, { relative } from "node:path";
+import path from "node:path";
 import esbuild from "esbuild";
 import fileLoc from "esbuild-plugin-fileloc";
 import YAML from "yaml";
@@ -7,6 +7,7 @@ import { createServer, build as viteBuild } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "tailwindcss";
 import autoprefixer from "autoprefixer";
+import chalk from "chalk";
 
 const rootOutputPath = sanitizePath(path.resolve(process.cwd(), "resources/[build]"));
 const rootSourcePath = sanitizePath(path.resolve(process.cwd(), "src"));
@@ -21,8 +22,6 @@ const initialResourceMap = {
 	resourceInfo: {},
 	resources: [],
 };
-
-const DISABLERS = ["exclude", "ignore"];
 
 export function getServerConfig() {
 	const server_config_path = path.resolve(process.cwd(), "server.yaml");
@@ -62,10 +61,7 @@ export function findResourcesToBuild(targets, skipweb, dirPath = rootSourcePath,
 		const itemPath = path.resolve(dirPath, item);
 		const files = fs.readdirSync(itemPath);
 
-		if (files.some(file => config.resource_disablers.includes(file))) {
-			console.log(`Resource ${item} is disabled. Skipping...`);
-			continue;
-		}
+		if (files.some(file => config.resource_disablers.includes(file))) continue;
 
 		const isCategory = categoryExp.test(item);
 
@@ -101,7 +97,7 @@ export function findResourcesToBuild(targets, skipweb, dirPath = rootSourcePath,
 
 				info.build = manifest.build ? manifest.build : [];
 				info.copy = manifest.copy ? [...manifest.copy, "fxmanifest.lua"] : ["fxmanifest.lua"];
-				
+
 				if (!skip) {
 					resourceMap.resources.push(item);
 					resourceMap.resourceInfo[item] = info;
@@ -141,7 +137,10 @@ export async function buildResource(resource, resourceMap, watch, onBuildComplet
 		if (resourceExists && !watch)
 			fs.rmSync(path.resolve(resourceMap.output, resourceInfo.relativePath), { recursive: true, force: true });
 
+		let t = Date.now();
 		for (const item of entryPoints) {
+			item.resourceName = resource;
+			
 			switch (item.build) {
 				case "vite":
 					await buildEntryWithVite(
@@ -163,6 +162,7 @@ export async function buildResource(resource, resourceMap, watch, onBuildComplet
 					break;
 			}
 		}
+		console.log(chalk.green(`[${resource}] done in ${Date.now() - t}ms`));
 
 		if (resourceInfo.copy) {
 			for (const file of resourceInfo.copy) {

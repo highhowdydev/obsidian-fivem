@@ -3,7 +3,7 @@ import "colors";
 
 async function main() {
 	console.log(
-		"\n░█░█░█▀█░█░█░█▀▄░█░█░░░▀█▀░█▀█░█▀█░█░░░█▀▀\n░█▀█░█░█░█▄█░█░█░░█░░░░░█░░█░█░█░█░█░░░▀▀█\n░▀░▀░▀▀▀░▀░▀░▀▀░░░▀░░░░░▀░░▀▀▀░▀▀▀░▀▀▀░▀▀▀"
+		`\n░█░█░█▀█░█░█░█▀▄░█░█░░░▀█▀░█▀█░█▀█░█░░░█▀▀\n░█▀█░█░█░█▄█░█░█░░█░░░░░█░░█░█░█░█░█░░░▀▀█\n░▀░▀░▀▀▀░▀░▀░▀▀░░░▀░░░░░▀░░▀▀▀░▀▀▀░▀▀▀░▀▀▀`
 			.blue,
 	);
 	console.log("Below are a list of helpful tools to get set up.\n".blue);
@@ -19,7 +19,7 @@ async function main() {
 					{ name: "2. Start Web Server", value: "web" },
 					{ name: "3. Download CFX Artifacts", value: "artifacts" },
 					{ name: "4. Generate server config", value: "config" },
-					{ name: "5. Generated start.bat file", value: "start" },
+					{ name: "5. Generate start.bat file", value: "start" },
 					{ name: "6. Configure asset links", value: "assets" },
 					{ name: "7. Exit", value: "exit" },
 				],
