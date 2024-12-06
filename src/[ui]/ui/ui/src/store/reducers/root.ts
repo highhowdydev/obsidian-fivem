@@ -1,7 +1,7 @@
 import { isEnvBrowser } from "../../utils";
 
 const initialState = {
-	application: isEnvBrowser() ? "characters" : "characters",
+	application: isEnvBrowser() ? "handling-editor" : "",
 	debug: false,
 	init: false,
 	blobs: [],
