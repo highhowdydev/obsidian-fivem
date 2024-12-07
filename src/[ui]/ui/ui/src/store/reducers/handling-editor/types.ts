@@ -10,7 +10,7 @@ export type HandlingField = {
 
 type HandlingFieldValue =
 	| { type: "float"; value: number }
-	| { type: "vector"; value: [number, number, number] }
+	| { type: "vector"; value: VectorValue }
 	| { type: "integer"; value: number };
 
 export type HandlingEditorState = {
@@ -18,3 +18,5 @@ export type HandlingEditorState = {
 	vehicle: string;
 	fields: HandlingField[];
 };
+
+export type VectorValue = [number, number, number];

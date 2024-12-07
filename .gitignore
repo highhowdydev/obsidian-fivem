@@ -10,3 +10,4 @@ start.bat
 .env
 \[assets\]/
 /assets
+/src/\[dev\]/handling-editor/exports/
