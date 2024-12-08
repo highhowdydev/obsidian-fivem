@@ -15,71 +15,96 @@ type SaveRequest = {
 type JsonField = {
 	name: string;
 	value: any;
+	type: string;
 };
 
+onClientCallback("handling:loadJsonList", () => {
+	const fileDir = path.join(__dirname, "../exports", "json");
+	if (!fs.existsSync(fileDir)) return [];
+
+	const files = fs.readdirSync(fileDir);
+	const jsonFiles = files.filter(file => file.endsWith(".json")).map(file => file.replace(".json", ""));
+
+	return jsonFiles;
+});
+
 onClientCallback("handling:saveJson", (playerId: number, data: SaveRequest) => {
-    console.log(chalk.blue(`Saving handling data for ${data.data.vehicle}`));
+	console.log(chalk.blue(`Saving handling data for ${data.data.vehicle}`));
 	const fileDir = path.join(__dirname, "../exports", "json");
 	if (!fs.existsSync(fileDir)) fs.mkdirSync(fileDir, { recursive: true });
 
 	const filePath = path.join(__dirname, "../exports", "json", `${data.data.vehicle}.json`);
 
 	if (fs.existsSync(filePath)) {
-        const date = dayjs(Date.now()).format("YYMMDDHHmmss");
-        const fileName = `${data.data.vehicle}-${date}.json`;
-        console.log(chalk.yellow(`Existing file found for ${data.data.vehicle}, saving to /exports/json/backups/${fileName}`));
+		const date = dayjs(Date.now()).format("YYMMDDHHmmss");
+		const fileName = `${data.data.vehicle}-${date}.json`;
+		console.log(
+			chalk.yellow(`Existing file found for ${data.data.vehicle}, saving to /exports/json/backups/${fileName}`),
+		);
 		const backupDir = path.join(__dirname, "../exports", "json", "backups");
 		if (!fs.existsSync(backupDir)) fs.mkdirSync(backupDir, { recursive: true });
 		fs.renameSync(filePath, path.join(backupDir, fileName));
 	}
 
+	for (const field of data.data.fields) {
+		if (field.type === "vector") {
+			field.value[0] = parseFloat(field.value[0].toFixed(6));
+			field.value[1] = parseFloat(field.value[1].toFixed(6));
+			field.value[2] = parseFloat(field.value[2].toFixed(6));
+		} else if (field.type === "float") {
+			field.value = parseFloat(field.value.toFixed(6));
+		} else if (field.type === "integer") {
+			field.value = parseInt(field.value);
+		}
+	}
+
 	const jsonData = JSON.stringify(data.data, null, 2);
 
 	fs.writeFileSync(filePath, jsonData);
-    console.log(chalk.green(`Saved handling data for ${data.data.vehicle} as /exports/json/${data.data.vehicle}.json`));
+	console.log(chalk.green(`Saved handling data for ${data.data.vehicle} as /exports/json/${data.data.vehicle}.json`));
 
 	return true;
 });
 
 onClientCallback("handling:generateMetaFile", () => {
-    const jsonDir = path.join(__dirname, "../exports", "json");
-    const metaDir = path.join(__dirname, "../exports", "meta");
+	const jsonDir = path.join(__dirname, "../exports", "json");
+	const metaDir = path.join(__dirname, "../exports", "meta");
 
-    if (!fs.existsSync(jsonDir)) return false;
-    if (!fs.existsSync(metaDir)) fs.mkdirSync(metaDir, { recursive: true });
+	if (!fs.existsSync(jsonDir)) return false;
+	if (!fs.existsSync(metaDir)) fs.mkdirSync(metaDir, { recursive: true });
 
-    let template = `<?xml version="1.0" encoding="UTF-8"?>\n<CHandlingDataMgr>\n\t<HandlingData>\n`;
+	let template = `<?xml version="1.0" encoding="UTF-8"?>\n<CHandlingDataMgr>\n\t<HandlingData>\n`;
 
-    const files = fs.readdirSync(jsonDir);
-    let fileCount;
+	const files = fs.readdirSync(jsonDir);
+	let fileCount;
 
-    files.forEach(file => {
-        if (fs.lstatSync(path.join(jsonDir, file)).isDirectory()) return;
-        const data = JSON.parse(fs.readFileSync(path.join(jsonDir, file), "utf-8"));
+	files.forEach(file => {
+		if (fs.lstatSync(path.join(jsonDir, file)).isDirectory()) return;
+		const data = JSON.parse(fs.readFileSync(path.join(jsonDir, file), "utf-8"));
 
-        const vehicle = data.vehicle;
-        const fields = data.fields;
+		const vehicle = data.vehicle;
+		const fields = data.fields;
 
-        template += `\t\t<Item type="CHandlingData">\n\t\t\t<HandlingName>${vehicle}</HandlingName>\n`;
+		template += `\t\t<Item type="CHandlingData">\n\t\t\t<HandlingName>${vehicle}</HandlingName>\n`;
 
-        fields.forEach((field: JsonField) => {
-            const { name, value: fieldValue } = field;
-            const value = Array.isArray(fieldValue)
-                ? `x="${fieldValue[0]}" y="${fieldValue[1]}" z="${fieldValue[2]}"`
-                : `value="${fieldValue}"`;
-            template += `\t\t\t<${name} ${value} />\n`;
-        });
+		fields.forEach((field: JsonField) => {
+			const { name, value: fieldValue } = field;
+			const value = Array.isArray(fieldValue)
+				? `x="${fieldValue[0]}" y="${fieldValue[1]}" z="${fieldValue[2]}"`
+				: `value="${fieldValue}"`;
+			template += `\t\t\t<${name} ${value} />\n`;
+		});
 
-        template += `\t\t</Item>\n`;
+		template += `\t\t</Item>\n`;
 
-        fileCount++;
-    });
+		fileCount++;
+	});
 
-    template += `\t</HandlingData>\n</CHandlingDataMgr>`;
+	template += `\t</HandlingData>\n</CHandlingDataMgr>`;
 
-    const metaFilePath = path.join(metaDir, "handling.meta");
+	const metaFilePath = path.join(metaDir, "handling.meta");
 
-    fs.writeFileSync(metaFilePath, template);
-    console.log(chalk.green(`Generated meta file with ${fileCount} entries`));
-    return true;
+	fs.writeFileSync(metaFilePath, template);
+	console.log(chalk.green(`Generated meta file with ${fileCount} entries`));
+	return true;
 });

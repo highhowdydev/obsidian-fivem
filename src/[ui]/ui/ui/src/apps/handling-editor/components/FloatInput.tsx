@@ -6,7 +6,7 @@ type FloatInputProps = {
 	name: string;
 	description?: string;
 	value: number;
-	onChange: (value: number, type: string) => void;
+	onChange: (value: number, type: string, skipVehicleChange: boolean) => void;
 	onBlur?: () => void;
 	onFocus?: () => void;
 	disabled?: boolean;
@@ -26,8 +26,9 @@ export default function FloatInput({
 	max,
 }: FloatInputProps) {
 	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+		if (!event.target.value.trim().length) return onChange(+event.target.value, "float", true);
 		const value = parseFloat(event.target.value);
-		if (!isNaN(value)) onChange(value, "float");
+		if (!isNaN(value)) onChange(value, "float", false);
 	};
 
 	return (

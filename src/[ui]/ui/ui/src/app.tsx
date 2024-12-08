@@ -11,6 +11,7 @@ import "@mantine/core/styles.css";
 import { MantineProvider } from "@mantine/core";
 import { baseTheme } from "./styles";
 import Chat from "./apps/chat/chat";
+import { AnimatePresence } from "motion/react";
 
 export default function App() {
 	const { application, init } = useSelector((state: RootState) => state.root);
@@ -39,7 +40,9 @@ export default function App() {
 					"bg-no-repeat bg-center bg-cover bg-[url('/static/gta-bg.png')]",
 				)}
 			>
-				{visibleApp ? cloneElement(visibleApp, { key: visibleApp.key || visibleApp.type }) : null}
+				<AnimatePresence>
+					{visibleApp ? cloneElement(visibleApp, { key: visibleApp.key || visibleApp.type }) : null}
+				</AnimatePresence>
 				<Chat />
 			</div>
 		</MantineProvider>

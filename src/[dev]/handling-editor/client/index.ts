@@ -4,23 +4,6 @@ import { triggerServerCallback } from "@overextended/ox_lib/client";
 
 const editor = new HandlingEditor();
 
-RegisterCommand(
-	"handling",
-	() => {
-		const UI = global.exports.ui;
-		const vehicle = GetVehiclePedIsIn(PlayerPedId(), false);
-		if (!vehicle) return;
-		editor.SetVehicle(vehicle);
-		const data = editor.GetVehicleHandlingData();
-		UI.DispatchNuiEvent("handling/init", {
-			vehicle: GetDisplayNameFromVehicleModel(GetEntityModel(vehicle)),
-			fields: data,
-		});
-		UI.SetApplication("handling-editor", true);
-	},
-	false,
-);
-
 type SaveRequest = {
 	name: string;
 	vehicle: string;
@@ -69,10 +52,34 @@ function handleNuiCallbacks() {
 		cb(result);
 	});
 
-	UI.NuiCallback("handling/mergeJson", async (cb: Function) => {
+	UI.NuiCallback("handling/mergeJson", async (_, cb: (...args: any) => void) => {
 		const result = await triggerServerCallback("handling:generateMetaFile", 0);
 		cb(result);
 	})
+
+	UI.NuiCallback("handling/loadJsonList", async (_, cb: (...args: any) => void) => {
+		const result = await triggerServerCallback("handling:loadJsonList", 0);
+		cb(result);
+	});
 }
+
+global.exports.binds.createBind({
+	key: "openhandlingeditor",
+	label: "Open Chat",
+	defaultKey: "F4",
+	allowNui: false,
+	async keydown() {
+		const UI = global.exports.ui;
+		const vehicle = GetVehiclePedIsIn(PlayerPedId(), false);
+		if (!vehicle) return;
+		editor.SetVehicle(vehicle);
+		const data = editor.GetVehicleHandlingData();
+		UI.DispatchNuiEvent("handling/init", {
+			vehicle: GetDisplayNameFromVehicleModel(GetEntityModel(vehicle)),
+			fields: data,
+		});
+		UI.SetApplication("handling-editor", true);
+	}
+})
 
 setTimeout(handleNuiCallbacks, 1000);

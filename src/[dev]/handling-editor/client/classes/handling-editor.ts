@@ -29,6 +29,8 @@ export class HandlingEditor {
 	}
 
 	public SetHandlingFloat(fieldName: string, value: number, type: string) {
+		value = parseFloat(value.toFixed(6));
+		console.log(`Setting ${fieldName} to ${value}`);
 		SetVehicleHandlingFloat(this.vehicle, type, fieldName, value + 0.0);
 	}
 
@@ -45,6 +47,7 @@ export class HandlingEditor {
 	}
 
 	public SetHandlingVector(fieldName: string, value: VectorValue, type: string) {
+		for (let i = 0; i < value.length; i++) value[i] = parseFloat(value[i].toFixed(6));
 		// @ts-expect-error
 		SetVehicleHandlingVector(this.vehicle, type, fieldName, value);
 	}
